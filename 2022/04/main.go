@@ -39,19 +39,7 @@ func (s *Section) Contains(other *Section) bool {
 }
 
 func (s *Section) Overlaps(other *Section) bool {
-	if s.start <= other.start && s.end >= other.start {
-		return true
-	}
-
-	if s.start <= other.end && s.end >= other.end {
-		return true
-	}
-
-	if other.Contains(s) {
-		return true
-	}
-
-	return false
+	return (s.start <= other.start && s.end >= other.start) || (s.start > other.start && s.start <= other.end)
 }
 
 type Pair struct {
