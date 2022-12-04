@@ -1,10 +1,10 @@
 # Advent of Code
 
-Advent of Code is an annual programming challenge, where you are given a series of puzzles to solve using code. The puzzles increase in difficulty as the event progresses, and the event typically runs from December 1st to December 25th.
+[Advent of Code](https://adventofcode.com/) is an annual programming challenge, where you are given a series of puzzles to solve using code. The puzzles increase in difficulty as the event progresses, and the event typically runs from December 1st to December 25th.
 
 ## Contents
 
-This repository contains my solutions to the Advent of Code puzzles, organized by year and day. Each solution is implemented in the language of my choice, and includes a brief description of the problem and my solution approach.
+This repository contains my solutions to the Advent of Code puzzles, implemented in the language of my choice, organized by year and day.
 
 ## Usage
 
