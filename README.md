@@ -10,6 +10,15 @@ This repository contains my solutions to the Advent of Code puzzles, implemented
 
 To use these solutions, simply clone this repository and navigate to the directory containing the solution you want to use. You will need to have the appropriate language runtime installed on your system in order to run the solution.
 
+Here is an example of how you might run one of the solutions in this repository:
+
+```sh
+$ cd 2022/04
+$ go build && ./04
+599
+928
+```
+
 ## Contributing
 
 If you have a better solution to any of the puzzles, or if you have any suggestions or feedback, I would love to hear from you! Simply open an issue or submit a pull request, and I will be happy to review and incorporate your changes.
