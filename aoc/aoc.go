@@ -15,5 +15,5 @@ func ReadInput() string {
 		panic("error reading input")
 	}
 
-	return strings.TrimSpace(string(data))
+	return strings.TrimSuffix(string(data), "\n")
 }
