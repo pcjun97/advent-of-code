@@ -11,6 +11,7 @@ func main() {
 	input := aoc.ReadInput()
 	v := NewValley(input)
 	t := v.BFS(v.Start, v.End, 0)
+	fmt.Println(t)
 	t = v.BFS(v.End, v.Start, t)
 	fmt.Println(v.BFS(v.Start, v.End, t))
 }
