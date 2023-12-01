@@ -1,16 +1,17 @@
 package aoc
 
 import (
+	"fmt"
 	"os"
-	"path"
 	"strings"
 )
 
 func ReadInput() string {
-	dir := path.Dir(os.Args[0])
-	inputFile := path.Join(dir, "input")
+	if len(os.Args) != 2 {
+		fmt.Fprintf(os.Stderr, "invalid number of arguments")
+	}
 
-	data, err := os.ReadFile(inputFile)
+	data, err := os.ReadFile(os.Args[1])
 	if err != nil {
 		panic("error reading input")
 	}
