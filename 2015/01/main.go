@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"os"
-	"strings"
+
+	"github.com/pcjun97/advent-of-code/aoc"
 )
 
 type Solver struct {
@@ -63,13 +63,8 @@ func (s *Solver) Part2() (int, error) {
 }
 
 func main() {
-	input, err := os.ReadFile("input")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	instructions := strings.TrimSuffix(string(input), "\n")
-	s := NewSolver(instructions)
+	input := aoc.ReadInput()
+	s := NewSolver(input)
 
 	finalLevel, err := s.FinalLevel()
 	if err != nil {
