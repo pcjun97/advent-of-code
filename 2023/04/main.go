@@ -27,7 +27,7 @@ func (c Card) WinningCount() int {
 }
 
 func parseCard(s string) Card {
-	r := regexp.MustCompile(`^Card (.+): (.+) \D (.+)$`)
+	r := regexp.MustCompile(`Card (.*): (.*) \| (.*)`)
 	m := r.FindStringSubmatch(s)
 	id, _ := strconv.Atoi(m[1])
 
