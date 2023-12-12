@@ -1,5 +1,7 @@
 package aoc
 
+import "math"
+
 type Coordinate struct {
 	X, Y int
 }
@@ -7,6 +9,20 @@ type Coordinate struct {
 func NewCoordinate(x, y int) Coordinate {
 	c := Coordinate{x, y}
 	return c
+}
+
+func (c Coordinate) ManhattanDistance(cc Coordinate) int {
+	dx := c.X - cc.X
+	if dx < 0 {
+		dx *= -1
+	}
+
+	dy := c.Y - cc.Y
+	if dy < 0 {
+		dy *= -1
+	}
+
+	return dx + dy
 }
 
 type Node struct {
@@ -54,6 +70,26 @@ func (g *Grid) Nodes() []*Node {
 		nodes = append(nodes, n)
 	}
 	return nodes
+}
+
+func (g *Grid) MaxX() int {
+	max := math.MinInt
+	for _, n := range g.nodes {
+		if n.X > max {
+			max = n.X
+		}
+	}
+	return max
+}
+
+func (g *Grid) MaxY() int {
+	max := math.MinInt
+	for _, n := range g.nodes {
+		if n.Y > max {
+			max = n.Y
+		}
+	}
+	return max
 }
 
 func (g *Grid) Neighbors8Way(node *Node) []*Node {
