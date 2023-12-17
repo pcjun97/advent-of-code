@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/pcjun97/advent-of-code/aoc"
 )
@@ -25,6 +26,10 @@ func (s *Solver) Part2() int {
 func main() {
 	input := aoc.ReadInput()
 	s := NewSolver(input)
-	fmt.Println(s.Part1())
-	fmt.Println(s.Part2())
+
+	start := time.Now()
+	fmt.Println(s.Part1(), time.Since(start).String())
+
+	start = time.Now()
+	fmt.Println(s.Part2(), time.Since(start).String())
 }
