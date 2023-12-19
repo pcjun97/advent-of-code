@@ -92,6 +92,26 @@ func (g *Grid) MaxY() int {
 	return max
 }
 
+func (g *Grid) MinX() int {
+	min := math.MaxInt
+	for _, n := range g.nodes {
+		if n.X < min {
+			min = n.X
+		}
+	}
+	return min
+}
+
+func (g *Grid) MinY() int {
+	min := math.MaxInt
+	for _, n := range g.nodes {
+		if n.Y < min {
+			min = n.Y
+		}
+	}
+	return min
+}
+
 func (g *Grid) Neighbors8Way(node *Node) []*Node {
 	neighbors := []*Node{}
 	for x := -1; x <= 1; x++ {
