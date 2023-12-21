@@ -77,6 +77,9 @@ func (s *Solver) Part2(steps int) int {
 	width := s.grid.MaxX() + 1
 	modulo := steps % width
 
+	cache := [2]int{0, 0}
+	visited := make(map[aoc.Coordinate]struct{})
+
 	current := make(map[aoc.Coordinate]struct{})
 	current[s.startingPosition] = struct{}{}
 
@@ -101,19 +104,25 @@ func (s *Solver) Part2(steps int) int {
 					n.Y += width
 				}
 
+				if _, ok := visited[cc]; ok {
+					continue
+				}
+				visited[cc] = struct{}{}
+
 				if s.grid.Get(n).Value() == GardenPlotTile {
 					next[cc] = struct{}{}
 				}
 			}
 		}
 		current = next
+		cache[i%2] += len(current)
 
 		if i == steps {
-			return len(current)
+			return cache[i%2]
 		}
 
 		if (i % width) == modulo {
-			list = append(list, len(current))
+			list = append(list, cache[i%2])
 		}
 		if len(list) == 4 && !IsQuadratic(list) {
 			list = list[1:]
