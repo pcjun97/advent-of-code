@@ -1,6 +1,8 @@
 package aoc
 
-import "math"
+import (
+	"math"
+)
 
 type Coordinate struct {
 	X, Y int
@@ -23,6 +25,15 @@ func (c Coordinate) ManhattanDistance(cc Coordinate) int {
 	}
 
 	return dx + dy
+}
+
+func (c Coordinate) Neighbors4Way() []Coordinate {
+	result := []Coordinate{}
+	result = append(result, Coordinate{c.X, c.Y - 1})
+	result = append(result, Coordinate{c.X, c.Y + 1})
+	result = append(result, Coordinate{c.X - 1, c.Y})
+	result = append(result, Coordinate{c.X + 1, c.Y})
+	return result
 }
 
 type Node struct {
@@ -126,5 +137,31 @@ func (g *Grid) Neighbors8Way(node *Node) []*Node {
 			}
 		}
 	}
+	return neighbors
+}
+
+func (g *Grid) Neighbors4Way(node *Node) []*Node {
+	neighbors := []*Node{}
+
+	c := Coordinate{node.X - 1, node.Y}
+	if n, ok := g.nodes[c]; ok {
+		neighbors = append(neighbors, n)
+	}
+
+	c = Coordinate{node.X + 1, node.Y}
+	if n, ok := g.nodes[c]; ok {
+		neighbors = append(neighbors, n)
+	}
+
+	c = Coordinate{node.X, node.Y - 1}
+	if n, ok := g.nodes[c]; ok {
+		neighbors = append(neighbors, n)
+	}
+
+	c = Coordinate{node.X, node.Y + 1}
+	if n, ok := g.nodes[c]; ok {
+		neighbors = append(neighbors, n)
+	}
+
 	return neighbors
 }
