@@ -55,16 +55,31 @@ func (n *Node) Value() int {
 }
 
 type Grid struct {
-	nodes map[Coordinate]*Node
+	nodes                  map[Coordinate]*Node
+	minX, maxX, minY, maxY int
 }
 
 func NewGrid() *Grid {
-	g := Grid{make(map[Coordinate]*Node)}
+	g := Grid{make(map[Coordinate]*Node), math.MaxInt, math.MinInt, math.MaxInt, math.MinInt}
 	return &g
 }
 
 func (g *Grid) Add(node *Node) {
 	g.nodes[node.Coordinate] = node
+
+	x, y := node.Coordinate.X, node.Coordinate.Y
+	if x > g.maxX {
+		g.maxX = x
+	}
+	if x < g.minX {
+		g.minX = x
+	}
+	if y > g.maxY {
+		g.maxY = y
+	}
+	if y < g.minY {
+		g.minY = y
+	}
 }
 
 func (g *Grid) Get(c Coordinate) *Node {
@@ -84,43 +99,19 @@ func (g *Grid) Nodes() []*Node {
 }
 
 func (g *Grid) MaxX() int {
-	max := math.MinInt
-	for _, n := range g.nodes {
-		if n.X > max {
-			max = n.X
-		}
-	}
-	return max
+	return g.maxX
 }
 
 func (g *Grid) MaxY() int {
-	max := math.MinInt
-	for _, n := range g.nodes {
-		if n.Y > max {
-			max = n.Y
-		}
-	}
-	return max
+	return g.maxY
 }
 
 func (g *Grid) MinX() int {
-	min := math.MaxInt
-	for _, n := range g.nodes {
-		if n.X < min {
-			min = n.X
-		}
-	}
-	return min
+	return g.minX
 }
 
 func (g *Grid) MinY() int {
-	min := math.MaxInt
-	for _, n := range g.nodes {
-		if n.Y < min {
-			min = n.Y
-		}
-	}
-	return min
+	return g.minY
 }
 
 func (g *Grid) Neighbors8Way(node *Node) []*Node {
