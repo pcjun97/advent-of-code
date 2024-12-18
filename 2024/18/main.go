@@ -49,21 +49,31 @@ func (s *Solver) Part1(steps int) int {
 }
 
 func (s *Solver) Part2() string {
-	g := aoc.NewGrid()
-	for y := 0; y <= s.Size; y++ {
-		for x := 0; x <= s.Size; x++ {
-			g.Add(aoc.NewNode(aoc.NewCoordinate(x, y), Empty))
+	min := 0
+	max := len(s.IncomingBytes) - 1
+	for min != max {
+		mid := (min + max) / 2
+
+		g := aoc.NewGrid()
+		for y := 0; y <= s.Size; y++ {
+			for x := 0; x <= s.Size; x++ {
+				g.Add(aoc.NewNode(aoc.NewCoordinate(x, y), Empty))
+			}
+		}
+
+		for i := 0; i <= mid; i++ {
+			g.Get(s.IncomingBytes[i]).Set(Corrupted)
+		}
+
+		if BestScore(g) > 0 {
+			min = mid + 1
+		} else {
+			max = mid
 		}
 	}
 
-	for _, c := range s.IncomingBytes {
-		g.Get(c).Set(Corrupted)
-		if !HasPath(g) {
-			return fmt.Sprintf("%d,%d", c.X, c.Y)
-		}
-	}
-
-	return ""
+	c := s.IncomingBytes[min]
+	return fmt.Sprintf("%d,%d", c.X, c.Y)
 }
 
 func BestScore(g *aoc.Grid) int {
@@ -107,54 +117,6 @@ func BestScore(g *aoc.Grid) int {
 
 			if c == end {
 				return bestscores[end]
-			}
-
-			tovisit = append(tovisit, c)
-		}
-	}
-}
-
-func HasPath(g *aoc.Grid) bool {
-	minX := g.MinX()
-	maxX := g.MaxX()
-	minY := g.MinY()
-	maxY := g.MaxY()
-
-	start := aoc.NewCoordinate(minX, minY)
-	end := aoc.NewCoordinate(maxX, maxY)
-
-	visited := make(map[aoc.Coordinate]struct{})
-	tovisit := []aoc.Coordinate{start}
-	visited[start] = struct{}{}
-
-	for {
-		if len(tovisit) <= 0 {
-			return false
-		}
-
-		i := 0
-		for j, v := range tovisit {
-			if v.ManhattanDistance(end) < tovisit[i].ManhattanDistance(end) {
-				i = j
-			}
-		}
-
-		visiting := tovisit[i]
-		tovisit = append(tovisit[:i], tovisit[i+1:]...)
-
-		for _, c := range visiting.Neighbors4Way() {
-			node := g.Get(c)
-			if node == nil || node.Value() == Corrupted {
-				continue
-			}
-
-			if _, ok := visited[c]; ok {
-				continue
-			}
-			visited[c] = struct{}{}
-
-			if c == end {
-				return true
 			}
 
 			tovisit = append(tovisit, c)
