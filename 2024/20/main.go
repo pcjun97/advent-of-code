@@ -62,22 +62,21 @@ type Cheat struct {
 func (s *Solver) BestCheats(cheatperiod, minsaving int) []Cheat {
 	besttime := make(map[aoc.Coordinate]int)
 
+	start := s.GetStart()
 	end := s.GetEnd()
 
 	besttime[end] = 0
-	tovisit := []aoc.Coordinate{end}
 
-	for len(tovisit) > 0 {
-		i := 0
-		for j, v := range tovisit {
-			if besttime[v] < besttime[tovisit[i]] {
-				i = j
-			}
+	t := 0
+	cur := end
+	for {
+		besttime[cur] = t
+
+		if cur == start {
+			break
 		}
-		visiting := tovisit[i]
-		tovisit = append(tovisit[:i], tovisit[i+1:]...)
 
-		for _, c := range visiting.Neighbors4Way() {
+		for _, c := range cur.Neighbors4Way() {
 			n := s.Get(c)
 			if n == nil || n.Value() == Wall {
 				continue
@@ -86,38 +85,17 @@ func (s *Solver) BestCheats(cheatperiod, minsaving int) []Cheat {
 			if _, ok := besttime[c]; ok {
 				continue
 			}
-			besttime[c] = besttime[visiting] + 1
 
-			tovisit = append(tovisit, c)
+			cur = c
+			break
 		}
-	}
 
-	tovisit = []aoc.Coordinate{s.GetStart()}
-	paths := make(map[aoc.Coordinate]struct{})
-
-	for len(tovisit) > 0 {
-		visiting := tovisit[0]
-		tovisit = tovisit[1:]
-
-		if _, ok := paths[visiting]; ok {
-			continue
-		}
-		paths[visiting] = struct{}{}
-
-		for _, c := range visiting.Neighbors4Way() {
-			if _, ok := besttime[c]; !ok {
-				continue
-			}
-			if besttime[visiting]-besttime[c] != 1 {
-				continue
-			}
-			tovisit = append(tovisit, c)
-		}
+		t++
 	}
 
 	cheats := []Cheat{}
 
-	for from := range paths {
+	for from, t := range besttime {
 		for x := -cheatperiod; x <= cheatperiod; x++ {
 			for y := -cheatperiod; y <= cheatperiod; y++ {
 				to := aoc.NewCoordinate(from.X+x, from.Y+y)
@@ -130,7 +108,7 @@ func (s *Solver) BestCheats(cheatperiod, minsaving int) []Cheat {
 					continue
 				}
 
-				if besttime[from]-(besttime[to]+from.ManhattanDistance(to)) >= minsaving {
+				if t-(besttime[to]+from.ManhattanDistance(to)) >= minsaving {
 					cheats = append(cheats, Cheat{from, to})
 				}
 			}
