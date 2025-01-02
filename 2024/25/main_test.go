@@ -53,6 +53,3 @@ func TestPart1(t *testing.T) {
 		t.Errorf("got %d, want %d", got, want)
 	}
 }
-
-func TestPart2(t *testing.T) {
-}
